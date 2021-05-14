@@ -49,6 +49,10 @@
         "routes": {
             "extensions": [".yaml"],
             "contentTypes": ["text/plain", "text/yaml", "application/octet-stream", "application/yaml", "application/x-yaml"]
+        },
+        "headers": {
+            "extensions": [".yaml"],
+            "contentTypes": ["text/plain", "text/yaml", "application/octet-stream", "application/yaml", "application/x-yaml"]
         }
     },
     "times": {
