@@ -48,10 +48,9 @@ const readHeadersFile = (headersPath) => {
  * @returns {HeaderConfig[]} of parsed header config objects
  */
 const parseHeadersFile = (content) => {
-    
     let headerConf = [];
     let configYaml = yaml.load(content);
-    console.log(configYaml);
+
     // yaml.load passes almost every yaml code.
     // Because of that, it's hard to detect if there's an error in the file.
     // But one of the obvious errors is the plain string output.
@@ -84,7 +83,6 @@ const parseHeadersFile = (content) => {
         headerConf.push(headerSet);
     }
 
-    console.log(headerConf);
     return headerConf;
 
 };
