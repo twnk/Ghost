@@ -257,7 +257,6 @@ describe('Settings API', function () {
             .expect(200);
 
         res.headers['x-cache-invalidate'].should.eql('/*');
-        await ghostServer.stop();
     });
 
     it('Can download headers.yaml', async function () {
@@ -268,28 +267,28 @@ describe('Settings API', function () {
 
         res.headers['content-disposition'].should.eql('Attachment; filename="headers.yaml"');
         res.headers['content-type'].should.eql('application/yaml; charset=utf-8');
-        res.headers['content-length'].should.eql('341');
+        res.headers['content-length'].should.eql('252');
     });
 
     it('Can upload headers.yaml', async function () {
-        const newRoutesYamlPath = `${os.tmpdir()}/headers.yaml`;
+        const newHeadersYamlPath = `${os.tmpdir()}/headers.yaml`;
 
         await fs.writeFile(
-            newRoutesYamlPath,
+            newHeadersYamlPath,
             [
                 "/*:",
                 "  Referrer-Policy: no-referrer-when-downgrade",
                 "  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload",
                 "  X-Content-Type-Options: nosniff",
                 "  X-Frame-Options: SAMEORIGIN",
-                "  X-Xss-Protection: 0",
+                "  X-Xss-Protection: '0'",
                 "  Feature-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
             ].join('\n')
         );
         const res = await request
             .post(localUtils.API.getApiQuery('settings/headers/yaml/'))
             .set('Origin', config.get('url'))
-            .attach('routes', newRoutesYamlPath)
+            .attach('headers', newHeadersYamlPath)
             .expect('Content-Type', /application\/json/)
             .expect(200);
 

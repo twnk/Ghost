@@ -57,7 +57,7 @@ module.exports = function apiRoutes() {
         apiMw.upload.validation({type: 'routes'}),
         http(apiCanary.settings.upload)
     );
-
+    
     // ## Headers
     router.get('/settings/headers/yaml', mw.authAdminApi, http(apiCanary.headers.download));
     router.post('/settings/headers/yaml',
@@ -66,7 +66,7 @@ module.exports = function apiRoutes() {
         apiMw.upload.validation({type: 'headers'}),
         http(apiCanary.headers.upload) 
     );
-
+    
     router.get('/settings', mw.authAdminApi, http(apiCanary.settings.browse));
     router.get('/settings/:key', mw.authAdminApi, http(apiCanary.settings.read));
     router.put('/settings', mw.authAdminApi, http(apiCanary.settings.edit));

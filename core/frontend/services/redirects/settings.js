@@ -205,7 +205,7 @@ const get = () => {
 };
 
 /**
- * Syncrounously loads current oncifg file and parses it's content
+ * Syncronously loads current config file and parses it's content
  *
  * @returns {{RedirectConfig[]}} of parsed redirect configurations
  */

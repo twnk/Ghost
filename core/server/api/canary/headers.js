@@ -1,6 +1,3 @@
-const path = require('path');
-
-const web = require('../../web');
 const headers = require('../../../frontend/services/headers');
 
 module.exports = {
@@ -9,22 +6,13 @@ module.exports = {
     download: {
         headers: {
             disposition: {
-                type: 'file',
-                value() {
-                    return headers.settings.getHeadersFilePath()
-                        .then((filePath) => {
-                            return filePath === null || 'headers.yaml';
-                        });
-                }
+                type: 'yaml',
+                value: 'headers.yaml'
             }
         },
-        permissions: false, // @TODO permissions
+        permissions: true, 
         response: {
-            async format() {
-                const filePath = await headers.settings.getHeadersFilePath();
-
-                return filePath === null || 'plain';
-            }
+            format: 'plain'
         },
         query() {
             return headers.settings.get();
@@ -32,17 +20,12 @@ module.exports = {
     },
 
     upload: {
-        permissions: false, // @TODO permissions
+        permissions: true, 
         headers: {
             cacheInvalidate: true
         },
         query(frame) {
             return headers.settings.setFromFilePath(frame.file.path);
-            /*
-                .then(() => {
-                    // CASE: trigger that headers are getting re-registered
-                    web.shared.middlewares.customHeaders.reload();
-                });*/
         }
     }
 };

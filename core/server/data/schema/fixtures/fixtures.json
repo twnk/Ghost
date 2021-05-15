@@ -268,6 +268,16 @@
                     "object_type": "redirect"
                 },
                 {
+                    "name": "Download headers",
+                    "action_type": "download",
+                    "object_type": "header"
+                },
+                {
+                    "name": "Upload headers",
+                    "action_type": "upload",
+                    "object_type": "header"
+                },
+                {
                     "name": "Add webhooks",
                     "action_type": "add",
                     "object_type": "webhook"

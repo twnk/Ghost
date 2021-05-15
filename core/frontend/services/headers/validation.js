@@ -18,7 +18,7 @@ const validate = (headerConf) => {
         if (!headerConf.path || !headerConf.headers) {
             throw new errors.ValidationError({
                 message: 'has path and headers', // i18n.t('errors.utils.redirectsWrongFormat'), // @TODO: Error Type
-                context: redirect,
+                context: header,
                 help: 'https://github.com/TryGhost/Ghost/issues/11084' // @TODO: Ghost Docs
             });
         }
@@ -27,7 +27,7 @@ const validate = (headerConf) => {
             if (!header.name || !header.value) {
                 throw new errors.ValidationError({
                     message: 'each headers has name and value', // i18n.t('errors.utils.redirectsWrongFormat'), // @TODO: Error Type
-                    context: redirect,
+                    context: header,
                     help: 'https://github.com/TryGhost/Ghost/issues/11084' // @TODO: Ghost Docs
                 });
             }

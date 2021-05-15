@@ -147,12 +147,20 @@ const setFromFilePath = (filePath) => {
                 })
                 .then((content) => {
                     validation.validate(content);
-                    return fs.copy(filePath, createHeadersFilePath('.yaml'));
+                    return fs.copy(filePath, createHeadersFilePath());
                 });
         });
 };
 
-const defaultHeadersContent = '';
+const defaultHeadersContent = [
+    "/*:",
+    "  Referrer-Policy: no-referrer-when-downgrade",
+    "  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload",
+    "  X-Content-Type-Options: nosniff",
+    "  X-Frame-Options: SAMEORIGIN",
+    "  X-Xss-Protection: '0'",
+    "  Feature-Policy: interest-cohort=()",
+].join('\n');
 
 const get = () => {
     return getHeadersFilePath().then((filePath) => {
@@ -160,12 +168,15 @@ const get = () => {
             return defaultHeadersContent;
         }
 
-        return readHeadersFile(filePath);
+        return readHeadersFile(filePath).then((content) => {
+            return content;
+        });
     });
 };
 
+
 /**
- * Syncrounously loads current oncifg file and parses it's content
+ * Syncronously loads current config file and parses it's content
  *
  * @returns {{HeaderConfig[]}} of parsed header configurations
  */

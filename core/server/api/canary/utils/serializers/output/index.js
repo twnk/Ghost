@@ -23,6 +23,10 @@ module.exports = {
         return require('./redirects');
     },
 
+    get headers() {
+        return require('./headers');
+    },
+
     get roles() {
         return require('./roles');
     },
