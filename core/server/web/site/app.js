@@ -156,6 +156,9 @@ module.exports = function setupSiteApp(options = {}) {
     // must happen AFTER asset loading and BEFORE routing
     siteApp.use(shared.middlewares.prettyUrls);
 
+    // Security headers
+    siteApp.use(mw.headers);
+
     // ### Caching
     siteApp.use(function (req, res, next) {
         // Site frontend is cacheable UNLESS request made by a member or blog is in private mode
