@@ -382,6 +382,11 @@
                 "missingFile": "Please select a YAML file.",
                 "invalidFile": "Please select a valid YAML file to import."
             },
+            "headers": {
+                "missingFile": "Please select a YAML file.",
+                "invalidFile": "Please select a valid YAML file to import.",
+                "yamlParse": "YAML input cannot be a plain string. Check the format of your YAML file."
+            },
             "settings": {
                 "problemFindingSetting": "Problem finding setting: {key}",
                 "accessCoreSettingFromExtReq": "Attempted to access core setting from external request",

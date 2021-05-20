@@ -267,7 +267,7 @@ describe('Settings API', function () {
 
         res.headers['content-disposition'].should.eql('Attachment; filename="headers.yaml"');
         res.headers['content-type'].should.eql('application/yaml; charset=utf-8');
-        res.headers['content-length'].should.eql('252');
+        res.headers['content-length'].should.eql('248');
     });
 
     it('Can upload headers.yaml', async function () {

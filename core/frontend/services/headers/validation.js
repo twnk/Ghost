@@ -1,37 +1,26 @@
 const _ = require('lodash');
+const yup = require('yup');
 const i18n = require('../../../shared/i18n');
 const errors = require('@tryghost/errors');
 
+const schema = yup.object({
+    path: yup.string().required(),
+    headers: yup.array().of(yup.object({
+        name: yup.string().required(),
+        value: yup.string().required()
+    }).required().noUnknown()).required()
+}).noUnknown();
+
 /**
- * Redirects are file based at the moment, but they will live in the database in the future.
- * See V2 of https://github.com/TryGhost/Ghost/issues/7707.
+ * Validates the processed YAML 
  */
 const validate = (headerConf) => {
-    if (!_.isArray(headerConf)) {
+    schema.validate(headerConf).catch(err => {
         throw new errors.ValidationError({
-            message: 'isArray', // i18n.t('errors.utils.redirectsWrongFormat'), // @TODO: Error Type
+            message: i18n.t('errors.api.headers.invalidFile'),
+            context: headerConf,
             help: 'https://github.com/TryGhost/Ghost/issues/11084' // @TODO: Ghost Docs
         });
-    }
-
-    _.each(headerConf, function (headerConf) {
-        if (!headerConf.path || !headerConf.headers) {
-            throw new errors.ValidationError({
-                message: 'has path and headers', // i18n.t('errors.utils.redirectsWrongFormat'), // @TODO: Error Type
-                context: header,
-                help: 'https://github.com/TryGhost/Ghost/issues/11084' // @TODO: Ghost Docs
-            });
-        }
-
-        _.each(headerConf.headers, function (header) {
-            if (!header.name || !header.value) {
-                throw new errors.ValidationError({
-                    message: 'each headers has name and value', // i18n.t('errors.utils.redirectsWrongFormat'), // @TODO: Error Type
-                    context: header,
-                    help: 'https://github.com/TryGhost/Ghost/issues/11084' // @TODO: Ghost Docs
-                });
-            }
-        })
     });
 };
 
