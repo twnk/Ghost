@@ -98,7 +98,7 @@ describe('Members API', function () {
         const jsonResponse = res.body;
         should.exist(jsonResponse);
         should.exist(jsonResponse.members);
-        jsonResponse.members.should.have.length(4);
+        jsonResponse.members.should.have.length(5);
         jsonResponse.members[0].email.should.equal('paid@test.com');
         jsonResponse.members[1].email.should.equal('trialing@test.com');
         localUtils.API.checkResponse(jsonResponse, 'members');
@@ -358,7 +358,6 @@ describe('Members API', function () {
         importedMember1.subscribed.should.equal(true);
         importedMember1.labels.length.should.equal(1);
         testUtils.API.isISO8601(importedMember1.created_at).should.be.true();
-        importedMember1.comped.should.equal(false);
         importedMember1.subscriptions.should.not.be.undefined();
         importedMember1.subscriptions.length.should.equal(0);
 
@@ -370,7 +369,6 @@ describe('Members API', function () {
         importedMember2.labels.length.should.equal(2);
         testUtils.API.isISO8601(importedMember2.created_at).should.be.true();
         importedMember2.created_at.should.equal('1991-10-02T20:30:31.000Z');
-        importedMember2.comped.should.equal(false);
         importedMember2.subscriptions.should.not.be.undefined();
         importedMember2.subscriptions.length.should.equal(0);
     });

@@ -206,6 +206,47 @@ describe('Members API (canary)', function () {
             });
     });
 
+    it('Paid members subscriptions has price data', function () {
+        const memberChanged = {
+            name: 'Updated name'
+        };
+        return request
+            .get(localUtils.API.getApiQuery('members/?search=egon&paid=true'))
+            .set('Origin', config.get('url'))
+            .expect('Content-Type', /json/)
+            .expect('Cache-Control', testUtils.cacheRules.private)
+            .expect(200)
+            .then((res) => {
+                should.not.exist(res.headers['x-cache-invalidate']);
+                const jsonResponse = res.body;
+                should.exist(jsonResponse);
+                should.exist(jsonResponse.members);
+                jsonResponse.members.should.have.length(1);
+                should.exist(jsonResponse.members[0].subscriptions[0].price);
+                return jsonResponse.members[0];
+            }).then((paidMember) => {
+                return request
+                    .put(localUtils.API.getApiQuery(`members/${paidMember.id}/`))
+                    .send({members: [memberChanged]})
+                    .set('Origin', config.get('url'))
+                    .expect('Content-Type', /json/)
+                    .expect('Cache-Control', testUtils.cacheRules.private)
+                    .expect(200)
+                    .then((res) => {
+                        should.not.exist(res.headers['x-cache-invalidate']);
+
+                        const jsonResponse = res.body;
+
+                        should.exist(jsonResponse);
+                        should.exist(jsonResponse.members);
+                        jsonResponse.members.should.have.length(1);
+                        localUtils.API.checkResponse(jsonResponse.members[0], 'member', ['subscriptions', 'products']);
+                        should.exist(jsonResponse.members[0].subscriptions[0].price);
+                        jsonResponse.members[0].name.should.equal(memberChanged.name);
+                    });
+            });
+    });
+
     it('Add should fail when passing incorrect email_type query parameter', function () {
         const member = {
             name: 'test',
@@ -450,7 +491,6 @@ describe('Members API (canary)', function () {
                 should(importedMember1.name).equal(null);
                 should(importedMember1.note).equal(null);
                 importedMember1.subscribed.should.equal(true);
-                importedMember1.comped.should.equal(false);
                 importedMember1.subscriptions.should.not.be.undefined();
                 importedMember1.subscriptions.length.should.equal(0);
 
@@ -517,7 +557,6 @@ describe('Members API (canary)', function () {
                 should(importedMember1.name).equal('Hannah');
                 should(importedMember1.note).equal('no need to map me');
                 importedMember1.subscribed.should.equal(true);
-                importedMember1.comped.should.equal(false);
                 importedMember1.subscriptions.should.not.be.undefined();
                 importedMember1.subscriptions.length.should.equal(0);
                 importedMember1.labels.length.should.equal(1); // auto-generated import label
@@ -562,7 +601,6 @@ describe('Members API (canary)', function () {
                 should(defaultMember1.name).equal(null);
                 should(defaultMember1.note).equal(null);
                 defaultMember1.subscribed.should.equal(true);
-                defaultMember1.comped.should.equal(false);
                 defaultMember1.subscriptions.should.not.be.undefined();
                 defaultMember1.subscriptions.length.should.equal(0);
                 defaultMember1.labels.length.should.equal(1); // auto-generated import label
